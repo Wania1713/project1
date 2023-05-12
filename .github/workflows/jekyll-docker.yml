@@ -20,12 +20,8 @@ jobs:
         jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
 
 
-
-name: Install dependencies
-run: npm ci
-
-
-
-name: run code style check
-run: npm.run.style:all
+          - name: Install dependencies
+            run: npm ci
+          - name: run code style check
+             run: npm.run.style:all
 
