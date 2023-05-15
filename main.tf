@@ -1,32 +1,42 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "4.67.0"
+    }
+  }
+}
+
 provider "aws" {
-  region = "us-east-1"
+  access_key = "AKIAQCE7WD5IX5OCN3RQ"
+  secret_key = "GDTxLD3B0MGjh7HAUHDXn9CJCgaPJ0JYP28UEvwH"
+  region     = "us-west-2"
+}
+resource "aws_s3_bucket" "static_website" {
+  bucket = "example-bucket-devops-project-1"
+  acl    = "private"
+
+  versioning {
+    enabled = true
+  }
 }
 
-resource "aws_s3_bucket" "website" {
-  bucket = "bucketproject-1"
-}
 
-resource "aws_s3_bucket_policy" "website" {
-  bucket = aws_s3_bucket.website.id
+resource "aws_s3_bucket_policy" "static_website" {
+  bucket = aws_s3_bucket.static_website.id
 
   policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        Sid = "PublicReadGetObject"
-        Effect = "Allow"
-        Principal = "*"
-        Action = [
-          "s3:GetObject"
-        ]
-        Resource = [
-          "arn:aws:s3:::${aws_s3_bucket.website.bucket}/*"
-        ]
+        "Effect" : "Deny",
+        "Principal": "*",
+        "Action": "s3:GetObject",
+        "Resource": "${aws_s3_bucket.static_website.arn}/*"
       }
     ]
   })
 }
 
-output "s3_bucket_name" {
-  value = aws_s3_bucket.website.bucket
-}
+
+
