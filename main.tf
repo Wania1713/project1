@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "website" {
-  bucket = "bucket-project1"
+  bucket = "bucketproject-1"
 }
 
 resource "aws_s3_bucket_policy" "website" {
